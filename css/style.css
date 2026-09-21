@@ -1,0 +1,837 @@
+/* =====================================================================
+   Navalha & Prosa — estilo personalizado (por cima do Bootstrap)
+   Paleta: grafite, marrom escuro, bege, branco e dourado nos detalhes.
+   ===================================================================== */
+
+:root {
+    --grafite: #262320;
+    --marrom: #4a3426;
+    --marrom-2: #6b4d39;
+    --bege: #e9dcc6;
+    --areia: #f3ecdf;
+    --papel: #fbf8f2;
+    --branco: #fffdf9;
+    --ouro: #c49a4a;
+    --ouro-claro: #dcb972;
+    --ouro-escuro: #8a6420;
+    --texto: #2d2621;
+    --texto-suave: #6f6257;
+    --linha: #e2d6c1;
+
+    --fonte-titulo: 'Young Serif', Georgia, 'Times New Roman', serif;
+    --sombra: 0 8px 28px rgba(38, 35, 32, 0.08);
+
+    /* Ajustes do Bootstrap */
+    --bs-body-font-family: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --bs-body-bg: var(--papel);
+    --bs-body-color: var(--texto);
+    --bs-body-line-height: 1.6;
+    --bs-link-color-rgb: 74, 52, 38;
+    --bs-link-hover-color-rgb: 138, 100, 32;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ouro-escuro);
+    outline-offset: 2px;
+}
+
+h1, h2, h3 {
+    font-family: var(--fonte-titulo);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); }
+h3 { font-size: 1.3rem; }
+.h4, .h5 { font-family: var(--fonte-titulo); font-weight: 400; }
+
+.texto-suave { color: var(--texto-suave); }
+
+.alert { border-radius: 12px; }
+
+/* ---------------------------------------------------------------------
+   Botões
+   --------------------------------------------------------------------- */
+.btn {
+    --bs-btn-border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Botão principal em fundo claro: marrom com filete dourado */
+.btn-marrom {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--marrom);
+    --bs-btn-border-color: var(--marrom);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--grafite);
+    --bs-btn-hover-border-color: var(--grafite);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--grafite);
+    --bs-btn-active-border-color: var(--grafite);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--marrom-2);
+    --bs-btn-disabled-border-color: var(--marrom-2);
+    --bs-btn-focus-shadow-rgb: 196, 154, 74;
+    box-shadow: inset 0 -3px 0 var(--ouro);
+}
+
+/* Botão principal em fundo escuro: dourado */
+.btn-ouro {
+    --bs-btn-color: var(--grafite);
+    --bs-btn-bg: var(--ouro);
+    --bs-btn-border-color: var(--ouro);
+    --bs-btn-hover-color: var(--grafite);
+    --bs-btn-hover-bg: var(--ouro-claro);
+    --bs-btn-hover-border-color: var(--ouro-claro);
+    --bs-btn-active-color: var(--grafite);
+    --bs-btn-active-bg: var(--ouro-claro);
+    --bs-btn-active-border-color: var(--ouro-claro);
+    --bs-btn-focus-shadow-rgb: 196, 154, 74;
+}
+
+.btn-contorno {
+    --bs-btn-color: var(--marrom);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--marrom-2);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--marrom);
+    --bs-btn-hover-border-color: var(--marrom);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--marrom);
+    --bs-btn-active-border-color: var(--marrom);
+    --bs-btn-focus-shadow-rgb: 196, 154, 74;
+}
+
+.btn-contorno-claro {
+    --bs-btn-color: var(--bege);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: rgba(233, 220, 198, 0.45);
+    --bs-btn-hover-color: var(--grafite);
+    --bs-btn-hover-bg: var(--bege);
+    --bs-btn-hover-border-color: var(--bege);
+    --bs-btn-active-color: var(--grafite);
+    --bs-btn-active-bg: var(--bege);
+    --bs-btn-active-border-color: var(--bege);
+    --bs-btn-focus-shadow-rgb: 196, 154, 74;
+}
+
+/* ---------------------------------------------------------------------
+   Navbar
+   --------------------------------------------------------------------- */
+.navbar.navbar-barbearia {
+    --bs-navbar-brand-color: var(--bege);
+    --bs-navbar-brand-hover-color: var(--branco);
+    --bs-navbar-color: rgba(233, 220, 198, 0.78);
+    --bs-navbar-hover-color: var(--branco);
+    --bs-navbar-active-color: var(--branco);
+    background-color: var(--grafite);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-block: 0.7rem;
+}
+
+.navbar-barbearia .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+}
+
+.navbar-barbearia .navbar-brand i {
+    color: var(--ouro);
+    font-size: 1.2rem;
+}
+
+.navbar-barbearia .nav-link {
+    font-weight: 500;
+}
+
+@media (min-width: 992px) {
+    .navbar-barbearia .nav-link.active {
+        box-shadow: inset 0 -2px 0 var(--ouro);
+    }
+}
+
+/* ---------------------------------------------------------------------
+   Página inicial: apresentação
+   --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   Página inicial: apresentação com fundo integrado
+   --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   Página inicial: apresentação com fundo integrado e harmônico
+   --------------------------------------------------------------------- */
+.hero {
+    position: relative;
+    color: var(--bege);
+    padding: clamp(4rem, 10vw, 7rem) 0 clamp(5rem, 11vw, 8rem);
+    
+    /* O '../' sai da pasta atual (ex: css/) e o 'img/' entra na pasta da imagem */
+    background-image: 
+        linear-gradient(to right, 
+            rgba(38, 35, 32, 1) 0%, 
+            rgba(38, 35, 32, 0.9) 45%, 
+            rgba(38, 35, 32, 0.4) 100%), 
+        url('../assets/img/WhatsApp\ Image\ 2026-09-20\ at\ 22.28.49.jpeg'); 
+    
+    background-repeat: no-repeat;
+    background-position: right 25%; 
+    background-size: cover ;
+}
+
+/* Película escura geral para tirar o brilho estourado da parede de fundo da foto */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(38, 35, 32, 0.2);
+    z-index: 1;
+}
+
+/* Mantém o texto e botões à frente do sombreamento */
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 { 
+    color: var(--branco); 
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Sombra leve para destacar ainda mais o título */
+}
+
+.hero .lead {
+    max-width: 34rem;
+    color: rgba(233, 220, 198, 0.95);
+    font-size: 1.15rem;
+    font-weight: 400;
+}
+
+/* Mantém a sua listra decorativa original rodando perfeitamente por cima */
+.listra {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 12px;
+    z-index: 3;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--ouro) 0 14px,
+        var(--grafite) 14px 28px,
+        var(--bege) 28px 42px,
+        var(--grafite) 42px 56px
+    );
+}
+
+/* Ajuste fino para celulares (telas menores que 992px) */
+@media (max-width: 991.98px) {
+    .hero {
+        /* Inverte o gradiente para vir de cima para baixo, protegendo o texto na vertical */
+        background-image: 
+            linear-gradient(to bottom, 
+                rgba(38, 35, 32, 0.95) 0%, 
+                rgba(38, 35, 32, 0.8) 50%, 
+                rgba(38, 35, 32, 0.5) 100%), 
+            url('image_Fe-rhw.png');
+        background-position: 65% center; /* Ajusta o foco no celular para o barbeiro não sumir */
+        padding: clamp(3rem, 8vw, 5rem) 0 clamp(4rem, 9vw, 6rem);
+    }
+}
+
+
+/* Mantém sua listra decorativa original por cima de tudo */
+.listra {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 12px;
+    z-index: 3;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--ouro) 0 14px,
+        var(--grafite) 14px 28px,
+        var(--bege) 28px 42px,
+        var(--grafite) 42px 56px
+    );
+}
+
+/* Ajuste específico para celulares (telas pequenas) */
+@media (max-width: 991.98px) {
+    .hero {
+        /* No celular, o gradiente passa a ser de cima para baixo para o texto não cobrir o rosto */
+        background-image: 
+            linear-gradient(to bottom, rgba(38, 35, 32, 0.95) 0%, rgba(38, 35, 32, 0.7) 60%, rgba(38, 35, 32, 0.4) 100%), 
+            url('caminho/da/sua-imagem.png');
+        background-position: center center;
+    }
+}
+
+/* Faixa inspirada no poste de barbeiro, nas cores da casa */
+.listra {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 12px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--ouro) 0 14px,
+        var(--grafite) 14px 28px,
+        var(--bege) 28px 42px,
+        var(--grafite) 42px 56px
+    );
+}
+
+/* Comanda de exemplo */
+.comanda {
+    position: relative;
+    max-width: 24rem;
+    margin-inline: auto;
+    padding: 1.75rem 1.6rem 1.5rem;
+    background: var(--branco);
+    color: var(--texto);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+    transform: rotate(1.2deg);
+}
+
+/* Borda serrilhada de papel picotado */
+.comanda::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 9px;
+    background: radial-gradient(circle at 9px 0, transparent 6px, var(--branco) 6.5px) 0 0 / 18px 9px repeat-x;
+}
+
+.comanda-titulo {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.comanda-legenda {
+    margin: 0.2rem 0 1.1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1.5px dashed var(--linha);
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+.comanda .linha-preco { padding: 0.35rem 0; }
+
+.comanda-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1.5px dashed var(--ouro);
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+}
+
+.comanda-nota {
+    margin: 1rem 0 0;
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------------
+   Seções da página inicial
+   --------------------------------------------------------------------- */
+.secao { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+.secao-areia { background: var(--areia); }
+
+.secao-titulo {
+    max-width: 36rem;
+    margin-bottom: 2.5rem;
+}
+
+.secao-titulo p {
+    margin: 0.75rem 0 0;
+    color: var(--texto-suave);
+}
+
+/* Quadro de preços: linhas com pontilhado, como no balcão */
+.quadro-precos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 0 3.5rem;
+}
+
+.item-servico {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--linha);
+}
+
+.linha-preco {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.pontilhado {
+    flex: 1;
+    min-width: 1rem;
+    border-bottom: 2px dotted var(--ouro);
+    opacity: 0.8;
+    transform: translateY(-0.25rem);
+}
+
+.item-servico .nome {
+    font-size: 1.08rem;
+    font-weight: 600;
+}
+
+.item-servico .preco {
+    color: var(--marrom);
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+}
+
+.item-servico .detalhe {
+    margin: 0.2rem 0 0;
+    color: var(--texto-suave);
+    font-size: 0.92rem;
+}
+
+/* Como funciona: lista numerada de verdade (é uma sequência) */
+.passos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: passo;
+}
+
+.passo {
+    position: relative;
+    padding-top: 3.4rem;
+}
+
+.passo::before {
+    counter-increment: passo;
+    content: counter(passo);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--ouro-escuro);
+    font-family: var(--fonte-titulo);
+    font-size: 2.6rem;
+    line-height: 1;
+}
+
+.passo h3 { margin-bottom: 0.5rem; }
+.passo p { margin: 0; color: var(--texto-suave); }
+
+.chamada {
+    padding: clamp(3rem, 6vw, 4.5rem) 0;
+    background: var(--marrom);
+    color: var(--bege);
+}
+
+.chamada h2 { color: var(--branco); margin-bottom: 0.75rem; }
+
+/* ---------------------------------------------------------------------
+   Rodapé
+   --------------------------------------------------------------------- */
+.rodape {
+    padding: 3rem 0 1.75rem;
+    background: var(--grafite);
+    color: rgba(233, 220, 198, 0.75);
+}
+
+.rodape a {
+    color: var(--bege);
+    text-decoration: none;
+}
+
+.rodape a:hover { color: var(--ouro-claro); text-decoration: underline; }
+
+.rodape li { margin-bottom: 0.35rem; }
+
+.rodape-marca {
+    color: var(--bege);
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+}
+
+.rodape-marca i { color: var(--ouro); }
+
+.rodape-titulo {
+    margin-bottom: 0.6rem;
+    color: var(--branco);
+    font-weight: 600;
+}
+
+.rodape-copia {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(233, 220, 198, 0.15);
+    font-size: 0.88rem;
+}
+
+/* ---------------------------------------------------------------------
+   Formulários e páginas de login / cadastro
+   --------------------------------------------------------------------- */
+.form-label {
+    margin-bottom: 0.35rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.form-control,
+.form-select {
+    padding: 0.7rem 0.9rem;
+    background-color: var(--branco);
+    border-color: var(--linha);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--ouro);
+    box-shadow: 0 0 0 0.2rem rgba(196, 154, 74, 0.25);
+}
+
+.auth { padding: clamp(2rem, 6vw, 4.5rem) 0; }
+
+.auth-cartao {
+    max-width: 62rem;
+    margin-inline: auto;
+    overflow: hidden;
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 18px;
+    box-shadow: var(--sombra);
+}
+
+.auth-lateral {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 3rem 2.5rem;
+    background: var(--marrom);
+    color: var(--bege);
+}
+
+.auth-lateral h2 {
+    margin-bottom: 1rem;
+    color: var(--branco);
+    font-size: clamp(1.7rem, 2.6vw, 2.1rem);
+}
+
+.auth-lateral p { margin: 0; color: rgba(233, 220, 198, 0.85); }
+
+.auth-form { padding: clamp(1.75rem, 4vw, 3rem); }
+.auth-form h1 { margin-bottom: 0.5rem; font-size: clamp(1.8rem, 3.5vw, 2.3rem); }
+
+/* Campos de barbeiro: só somem quando o JavaScript está ativo */
+.js .campos-barbeiro.oculto { display: none; }
+
+/* ---------------------------------------------------------------------
+   Opções selecionáveis (serviços, barbeiros, horários, tipo de conta)
+   O <input> fica escondido e o <label> vira o cartão clicável.
+   --------------------------------------------------------------------- */
+.opcao {
+    position: relative;
+    display: block;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    background: var(--branco);
+    border: 1.5px solid var(--linha);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.opcao:hover { border-color: var(--ouro); }
+
+.opcao-input:checked + .opcao {
+    background: #fbf3e3;
+    border-color: var(--ouro);
+    box-shadow: 0 0 0 3px rgba(196, 154, 74, 0.22);
+}
+
+.opcao-input:focus-visible + .opcao {
+    outline: 2px solid var(--marrom);
+    outline-offset: 2px;
+}
+
+.opcao-input:disabled + .opcao {
+    background: var(--areia);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.opcao-input:disabled + .opcao:hover { border-color: var(--linha); }
+
+.opcao .marca {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 1.5px solid var(--linha);
+    border-radius: 50%;
+    color: transparent;
+    font-size: 0.8rem;
+}
+
+.opcao-input:checked + .opcao .marca {
+    background: var(--ouro);
+    border-color: var(--ouro);
+    color: var(--grafite);
+}
+
+.opcao-titulo {
+    display: block;
+    padding-right: 2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.opcao-texto {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--texto-suave);
+    font-size: 0.92rem;
+}
+
+.opcao-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.85rem;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+.opcao-rodape strong {
+    color: var(--marrom);
+    font-family: var(--fonte-titulo);
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.opcao-horario {
+    padding: 0.7rem 0.4rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    text-align: center;
+}
+
+.opcao-horario small {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+}
+
+.opcao-input:disabled + .opcao-horario .hora-valor { text-decoration: line-through; }
+
+.campo-data { max-width: 16rem; }
+
+/* ---------------------------------------------------------------------
+   Páginas internas (agendamento, cliente, barbeiro)
+   --------------------------------------------------------------------- */
+.topo-pagina {
+    padding: 2.5rem 0 2rem;
+    background: var(--areia);
+    border-bottom: 1px solid var(--linha);
+}
+
+.topo-pagina h1 {
+    margin-bottom: 0.4rem;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+}
+
+.conteudo { padding-block: 2.5rem 4rem; }
+
+.cartao {
+    padding: 1.5rem;
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+}
+
+.cartao.vazio { text-align: center; padding: 2.5rem 1.5rem; }
+
+@media (min-width: 992px) {
+    .resumo {
+        position: sticky;
+        top: 5.5rem;
+    }
+}
+
+.resumo-linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+}
+
+.resumo-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    padding-top: 0.9rem;
+    border-top: 1.5px dashed var(--ouro);
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+}
+
+.resumo-detalhes {
+    margin: 1.25rem 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--linha);
+}
+
+.resumo-detalhes dt {
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.resumo-detalhes dd { margin: 0 0 0.6rem; font-weight: 600; }
+
+/* Dados do perfil */
+.dados dt {
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.dados dd { margin: 0 0 0.85rem; }
+.dados dd:last-child { margin-bottom: 0; }
+
+/* Cartões de agendamento do cliente */
+.agendamento {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+}
+
+.data-bloco {
+    flex: 0 0 4.25rem;
+    padding: 0.6rem 0.25rem;
+    background: var(--grafite);
+    border-radius: 10px;
+    color: var(--bege);
+    text-align: center;
+}
+
+.data-bloco .dia {
+    display: block;
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.data-bloco .mes {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--ouro-claro);
+    font-size: 0.85rem;
+}
+
+.agendamento-info { flex: 1 1 14rem; min-width: 0; }
+
+.agendamento-servicos {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.agendamento-detalhe {
+    margin: 0 0 0.15rem;
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.agendamento-detalhe i { color: var(--ouro-escuro); margin-right: 0.25rem; }
+
+.agendamento-valor {
+    color: var(--marrom);
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+}
+
+.selo {
+    display: inline-block;
+    margin-left: 0.35rem;
+    padding: 0.05rem 0.6rem;
+    background: var(--ouro);
+    border-radius: 999px;
+    color: var(--grafite);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Tabela da agenda do barbeiro */
+.tabela-agenda {
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--linha);
+}
+
+.tabela-agenda th {
+    padding: 0.9rem 0.85rem;
+    background: var(--areia);
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.tabela-agenda td { padding: 1rem 0.85rem; }
+
+.tabela-agenda .hora {
+    font-family: var(--fonte-titulo);
+    font-size: 1.15rem;
+    white-space: nowrap;
+}
+
+.tabela-agenda .obs {
+    margin-top: 0.2rem;
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------------
+   Preferência por menos movimento
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+}
+
