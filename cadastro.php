@@ -50,7 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros['telefone'] = 'Informe o telefone com DDD, por exemplo (61) 91234-5678.';
     }
 
-    
+    $cpf = apenasDigitos($dados['cpf']);
+    if ($dados['cpf'] !== '' && !cpfValido($cpf)) {
+        $erros['cpf'] = 'Esse CPF não parece correto. Confira os números.';
+    }
 
     if (strlen($senha) < 8) {
         $erros['senha'] = 'Use uma senha com pelo menos 8 caracteres.';
@@ -78,7 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erros['email'] = 'Esse e-mail já tem uma conta. Que tal entrar?';
         }
     }
-   
+    if ($cpf !== '' && !isset($erros['cpf'])) {
+        $consulta = $pdo->prepare('SELECT id FROM usuarios WHERE cpf = ?');
+        $consulta->execute([$cpf]);
+        if ($consulta->fetch()) {
+            $erros['cpf'] = 'Esse CPF já está cadastrado. Que tal entrar?';
+        }
+    }
 
     // --- Tudo certo: salva a conta ---
     if (!$erros) {
@@ -92,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dados['nome'],
                 $dados['email'],
                 $telefone,
+                $cpf !== '' ? $cpf : null,
                 password_hash($senha, PASSWORD_DEFAULT), // a senha nunca é guardada em texto puro
                 $dados['tipo'],
                 $ehBarbeiro && $dados['especialidade'] !== '' ? $dados['especialidade'] : null,
