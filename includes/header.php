@@ -18,7 +18,7 @@ $tituloPagina = $tituloPagina ?? 'Barbearia';
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="assets/css/estilo.css" rel="stylesheet">
 
     <!-- Avisa o CSS que o JavaScript está ativo (a página funciona sem ele) -->
     <script>document.documentElement.classList.add('js');</script>
