@@ -40,13 +40,13 @@ $tipo        = tipoUsuario();
 
             <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2 pb-3 pb-lg-0">
                 <?php if (!$logado): ?>
-                    <a class="btn btn-contorno-claro" href="login.php">Entrar</a>
-                    <a class="btn btn-contorno-claro" href="cadastro.php">Criar conta</a>
-                    <a class="btn btn-ouro" href="agendamento.php">Agendar horário</a>
+                    <a class="btn btn-contorno-claro" href="view/login.php">Entrar</a>
+                    <a class="btn btn-contorno-claro" href="view/cadastro.php">Criar conta</a>
+                    <a class="btn btn-ouro" href="agendamento2.php">Agendar horário</a>
                 <?php else: ?>
                     <span class="navbar-text me-lg-2">Olá, <?= e(primeiroNome($_SESSION['usuario_nome'] ?? '')) ?></span>
                     <?php if ($tipo === 'cliente'): ?>
-                        <a class="btn btn-ouro" href="agendamento.php">Agendar horário</a>
+                        <a class="btn btn-ouro" href="agendamento2.php">Agendar horário</a>
                     <?php endif; ?>
                     <a class="btn btn-contorno-claro" href="logout.php"
                        data-confirmar="Tem certeza de que quer sair?">Sair</a>

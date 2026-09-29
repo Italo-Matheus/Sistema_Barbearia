@@ -17,7 +17,7 @@ require __DIR__ . '/../includes/header.php';
                 <div class="col-lg-7">
                     <div class="auth-form">
                         <h1>Vamos criar sua conta?</h1>
-                        <p class="texto-suave mb-4">Leva menos de um minuto. Já tem conta? <a href="login.php">Entrar</a></p>
+                        <p class="texto-suave mb-4">Leva menos de um minuto. Já tem conta? <a href="view/login.php">Entrar</a></p>
 
                         <?php
                         if (isset($erros['geral'])) {
@@ -27,7 +27,7 @@ require __DIR__ . '/../includes/header.php';
                         }
                         ?>
 
-                        <form method="post" action="cadastro.php">
+                        <form method="post" action="view/cadastro.php">
                             <?= campoCsrf() ?>
 
                             <p class="form-label">Você é</p>

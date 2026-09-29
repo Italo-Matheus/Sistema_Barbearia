@@ -4,6 +4,16 @@
  * Antes de incluir, a página pode definir $tituloPagina.
  */
 $tituloPagina = $tituloPagina ?? 'Barbearia';
+$scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/');
+$viewPosition = strpos($scriptName, '/view/');
+if ($viewPosition !== false) {
+    $baseHref = substr($scriptName, 0, $viewPosition + 1);
+} else {
+    $baseHref = rtrim(dirname($scriptName), '/') . '/';
+}
+if ($baseHref === '') {
+    $baseHref = '/';
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,6 +22,7 @@ $tituloPagina = $tituloPagina ?? 'Barbearia';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Escolha seus serviços, seu barbeiro e o melhor horário. Agendamento simples na <?= e(NOME_BARBEARIA) ?>.">
     <title><?= e($tituloPagina) ?> — <?= e(NOME_BARBEARIA) ?></title>
+    <base href="<?= e($baseHref) ?>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

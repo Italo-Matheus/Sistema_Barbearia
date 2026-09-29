@@ -165,7 +165,7 @@ function exigirLogin(?string $tipo = null): void
 {
     if (!usuarioLogado()) {
         definirMensagem('info', 'Entre na sua conta para continuar.');
-        redirecionar('login.php');
+        redirecionar('view/login.php');
     }
     if ($tipo !== null && tipoUsuario() !== $tipo) {
         definirMensagem('warning', 'Essa página é de outro tipo de conta. Levamos você para o seu espaço.');
@@ -186,7 +186,7 @@ function carregarUsuario(PDO $pdo): array
     if (!$usuario) { // conta removida enquanto a sessão estava aberta
         encerrarSessao();
         definirMensagem('warning', 'Não encontramos sua conta. Entre novamente.');
-        redirecionar('login.php');
+        redirecionar('view/login.php');
     }
     return $usuario;
 }
