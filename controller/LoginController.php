@@ -38,7 +38,7 @@ class LoginController
                     $_SESSION['usuario_tipo'] = $usuario['tipo'];
 
                     definirMensagem('success', 'Que bom ter você por aqui, ' . primeiroNome($usuario['nome']) . '!');
-                    redirecionar($usuario['tipo'] === 'barbeiro' ? '../barbeiro.php' : '../agendamento2.php');
+                    redirecionar('../' . areaDoUsuario());
                 }
 
                 $erro = 'Não conseguimos entrar com esses dados. Confira seu e-mail e sua senha.';

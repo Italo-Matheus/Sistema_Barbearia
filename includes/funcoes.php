@@ -151,25 +151,79 @@ function tipoUsuario(): ?string
     return $_SESSION['usuario_tipo'] ?? null;
 }
 
+function baseAplicacao(): string
+{
+    $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/');
+    $viewPosition = strpos($scriptName, '/view/');
+    $baseHref = $viewPosition !== false
+        ? substr($scriptName, 0, $viewPosition + 1)
+        : rtrim(dirname($scriptName), '/') . '/';
+
+    return $baseHref !== '' ? $baseHref : '/';
+}
+
 /** Página inicial de cada tipo de usuário. */
 function areaDoUsuario(): string
 {
-    return tipoUsuario() === 'barbeiro' ? 'barbeiro.php' : 'cliente.php';
+    return match (tipoUsuario()) {
+        'admin' => 'view/admin/dashboard.php',
+        'barbeiro' => 'view/admin/barbeiro.php',
+        default => 'cliente.php',
+    };
+}
+
+function exigirAdmin(PDO $pdo): array
+{
+    if (!usuarioLogado()) {
+        definirMensagem('info', 'Entre na sua conta para continuar.');
+        redirecionar(baseAplicacao() . 'view/login.php');
+    }
+
+    $consulta = $pdo->prepare('SELECT id, nome, tipo, ativo FROM usuarios WHERE id = ? LIMIT 1');
+    $consulta->execute([(int) $_SESSION['usuario_id']]);
+    $usuario = $consulta->fetch();
+
+    if (!$usuario || !(bool) $usuario['ativo'] || $usuario['tipo'] !== 'admin') {
+        encerrarSessao();
+        definirMensagem('danger', 'Acesso restrito ao perfil administrador. Entre com uma conta autorizada.');
+        redirecionar(baseAplicacao() . 'view/login.php');
+    }
+
+    $_SESSION['usuario_tipo'] = 'admin';
+    $_SESSION['usuario_nome'] = $usuario['nome'];
+
+    return $usuario;
 }
 
 /**
  * Use no topo das páginas privadas.
  * Sem login, manda para o login. Com o tipo errado, manda para a área certa.
  */
-function exigirLogin(?string $tipo = null): void
+function exigirLogin(?string $tipo = null, ?PDO $pdo = null): void
 {
     if (!usuarioLogado()) {
         definirMensagem('info', 'Entre na sua conta para continuar.');
-        redirecionar('view/login.php');
+        redirecionar(baseAplicacao() . 'view/login.php');
     }
+
+    if ($pdo !== null) {
+        $consulta = $pdo->prepare('SELECT nome, tipo, ativo FROM usuarios WHERE id = ? LIMIT 1');
+        $consulta->execute([(int) $_SESSION['usuario_id']]);
+        $usuario = $consulta->fetch();
+
+        if (!$usuario || !(bool) $usuario['ativo']) {
+            encerrarSessao();
+            definirMensagem('warning', 'Sua conta está indisponível. Entre novamente ou fale com a barbearia.');
+            redirecionar(baseAplicacao() . 'view/login.php');
+        }
+
+        $_SESSION['usuario_tipo'] = $usuario['tipo'];
+        $_SESSION['usuario_nome'] = $usuario['nome'];
+    }
+
     if ($tipo !== null && tipoUsuario() !== $tipo) {
         definirMensagem('warning', 'Essa página é de outro tipo de conta. Levamos você para o seu espaço.');
-        redirecionar(areaDoUsuario());
+        redirecionar(baseAplicacao() . areaDoUsuario());
     }
 }
 
@@ -177,16 +231,16 @@ function exigirLogin(?string $tipo = null): void
 function carregarUsuario(PDO $pdo): array
 {
     $consulta = $pdo->prepare(
-        'SELECT id, nome, email, telefone, cpf, tipo, especialidade, descricao
+        'SELECT id, nome, email, telefone, cpf, tipo, especialidade, descricao, ativo
          FROM usuarios WHERE id = ?'
     );
     $consulta->execute([$_SESSION['usuario_id']]);
     $usuario = $consulta->fetch();
 
-    if (!$usuario) { // conta removida enquanto a sessão estava aberta
+    if (!$usuario || !(bool) $usuario['ativo']) {
         encerrarSessao();
-        definirMensagem('warning', 'Não encontramos sua conta. Entre novamente.');
-        redirecionar('view/login.php');
+        definirMensagem('warning', 'Sua conta está indisponível. Entre novamente ou fale com a barbearia.');
+        redirecionar(baseAplicacao() . 'view/login.php');
     }
     return $usuario;
 }

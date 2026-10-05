@@ -21,12 +21,12 @@
                 <p class="rodape-titulo">Sua conta</p>
                 <ul class="list-unstyled mb-0">
                     <?php if (usuarioLogado()): ?>
-                        <li><a href="<?= e(areaDoUsuario()) ?>"><?= tipoUsuario() === 'barbeiro' ? 'Minha agenda' : 'Meus horários' ?></a></li>
+                        <li><a href="<?= e(areaDoUsuario()) ?>"><?= tipoUsuario() === 'admin' ? 'Painel administrativo' : (tipoUsuario() === 'barbeiro' ? 'Minha agenda' : 'Meus horários') ?></a></li>
                     <?php else: ?>
                         <li><a href="view/login.php">Entrar</a></li>
                         <li><a href="view/cadastro.php">Criar conta</a></li>
                     <?php endif; ?>
-                    <li><a href="agendamento2.php">Agendar horário</a></li>
+                    <li><a href="view/usuario/agendamento.php">Agendar horário</a></li>
                 </ul>
             </div>
         </div>

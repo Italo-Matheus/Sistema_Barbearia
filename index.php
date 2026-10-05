@@ -26,7 +26,7 @@ require __DIR__ . '/includes/header.php';
                     e o melhor horário em poucos cliques. É só chegar, sentar e relaxar.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
-                    <a class="btn btn-ouro btn-lg" href="agendamento2.php">Agendar horário</a>
+                    <a class="btn btn-ouro btn-lg" href="view/usuario/agendamento.php">Agendar horário</a>
                     <?php if (!usuarioLogado()): ?>
                         <a class="btn btn-contorno-claro btn-lg" href="view/cadastro.php">Criar conta</a>
                     <?php endif; ?>
@@ -63,7 +63,7 @@ require __DIR__ . '/includes/header.php';
                     </div>
                 <?php endforeach; ?>
             </div>
-            <a class="btn btn-marrom btn-lg mt-5" href="agendamento2.php">Reservar meu horário</a>
+            <a class="btn btn-marrom btn-lg mt-5" href="view/usuario/agendamento.php">Reservar meu horário</a>
         <?php else: ?>
             <p class="texto-suave">Nossos serviços serão publicados em breve. Volte logo!</p>
         <?php endif; ?>
@@ -104,7 +104,7 @@ require __DIR__ . '/includes/header.php';
     <div class="container text-center">
         <h2>Vamos reservar seu horário?</h2>
         <p class="mb-4">Seu próximo corte está a poucos cliques de distância.</p>
-        <a class="btn btn-ouro btn-lg" href="agendamento2.php">Agendar horário</a>
+        <a class="btn btn-ouro btn-lg" href="view/usuario/agendamento.php">Agendar horário</a>
     </div>
 </section>
 

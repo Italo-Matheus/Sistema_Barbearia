@@ -9,6 +9,32 @@ class AgendamentoDAO
         $this->pdo = $pdo;
     }
 
+    public function contarTodos(): int
+    {
+        return (int) $this->pdo->query('SELECT COUNT(*) FROM agendamentos')->fetchColumn();
+    }
+
+    public function listarRecentesAdmin(int $limite = 10): array
+    {
+        $consulta = $this->pdo->prepare(
+            "SELECT a.id, a.data, a.horario, a.status, a.valor_total,
+                    c.nome AS cliente_nome, b.nome AS barbeiro_nome,
+                    GROUP_CONCAT(s.nome ORDER BY s.id SEPARATOR ', ') AS servicos
+             FROM agendamentos a
+             JOIN usuarios c ON c.id = a.cliente_id
+             JOIN usuarios b ON b.id = a.barbeiro_id
+             LEFT JOIN agendamento_servicos ags ON ags.agendamento_id = a.id
+             LEFT JOIN servicos s ON s.id = ags.servico_id
+             GROUP BY a.id, a.data, a.horario, a.status, a.valor_total, c.nome, b.nome
+             ORDER BY a.data DESC, a.horario DESC
+             LIMIT :limite"
+        );
+        $consulta->bindValue(':limite', max(1, $limite), PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetchAll();
+    }
+
     public function listarHorariosOcupados(int $barbeiroId, string $data): array
     {
         $consulta = $this->pdo->prepare(
@@ -91,7 +117,7 @@ class AgendamentoDAO
         $this->pdo->beginTransaction();
         try {
             $trava = $this->pdo->prepare(
-                "SELECT id FROM usuarios WHERE id = ? AND tipo = 'barbeiro' FOR UPDATE"
+                "SELECT id FROM usuarios WHERE id = ? AND tipo = 'barbeiro' AND ativo = 1 FOR UPDATE"
             );
             $trava->execute([$barbeiroId]);
             if ($trava->fetchColumn() === false) {

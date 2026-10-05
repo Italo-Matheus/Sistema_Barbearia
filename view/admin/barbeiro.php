@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../model/dao/Conexao.php';
 require_once __DIR__ . '/../../includes/funcoes.php';
 
-exigirLogin('barbeiro');
+exigirLogin('barbeiro', $pdo);
 $usuario = carregarUsuario($pdo);
 
 // Próximos agendamentos deste barbeiro, do mais próximo para o mais distante.

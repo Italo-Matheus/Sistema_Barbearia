@@ -1,4 +1,34 @@
-<?php require __DIR__ . '/../../includes/header.php'; ?>
+<?php
+if (!defined('AGENDAMENTO_EM_EXECUCAO')) {
+    define('AGENDAMENTO_EM_EXECUCAO', true);
+    require_once __DIR__ . '/../../model/dao/Conexao.php';
+    require_once __DIR__ . '/../../controller/AgendamentoController.php';
+
+    $modeloAgendamento = new AgendamentoModel($pdo);
+    $controller = new AgendamentoController($pdo, $modeloAgendamento);
+    $enviado = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
+    $controller->agendar($_POST, $enviado, $enviado && csrfValido());
+    return;
+}
+
+$etapa = $etapa ?? 1;
+$erros = $erros ?? [];
+$servicos = $servicos ?? [];
+$barbeiros = $barbeiros ?? [];
+$idsServicos = $idsServicos ?? [];
+$barbeiroId = $barbeiroId ?? 0;
+$data = $data ?? '';
+$hoje = $hoje ?? '';
+$dataMaxima = $dataMaxima ?? '';
+$servicosEscolhidos = $servicosEscolhidos ?? [];
+$totalEscolhido = $totalEscolhido ?? 0.0;
+$barbeirosPorId = $barbeirosPorId ?? [];
+$temHorarioLivre = $temHorarioLivre ?? false;
+$horarios = $horarios ?? [];
+$horario = $horario ?? '';
+$observacao = $observacao ?? '';
+require __DIR__ . '/../../includes/header.php';
+?>
 
 <section class="topo-pagina">
     <div class="container">
@@ -25,7 +55,7 @@
             </div>
         <?php endif; ?>
 
-        <form method="post" action="agendamento2.php">
+        <form method="post" action="view/usuario/agendamento.php">
             <?= campoCsrf() ?>
 
             <div class="row g-4">
@@ -112,7 +142,7 @@
         <!-- ============ ETAPA 2: horário, observação e confirmação ============ -->
         <?php $barbeiroEscolhido = $barbeirosPorId[$barbeiroId]; ?>
 
-        <form method="post" action="agendamento2.php">
+        <form method="post" action="view/usuario/agendamento.php">
             <?= campoCsrf() ?>
             <?php foreach ($servicosEscolhidos as $servico): ?>
                 <input type="hidden" name="servicos[]" value="<?= (int) $servico['id'] ?>">

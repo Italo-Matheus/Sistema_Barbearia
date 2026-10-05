@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../model/dao/Conexao.php';
 require_once __DIR__ . '/../../includes/funcoes.php';
 
-exigirLogin('cliente');
+exigirLogin('cliente', $pdo);
 $usuario = carregarUsuario($pdo);
 
 // Próximos agendamentos: de hoje em diante, sem contar horários que já passaram.
@@ -38,7 +38,7 @@ require __DIR__ . '/../../includes/header.php';
             <h1>Olá, <?= e(primeiroNome($usuario['nome'])) ?>!</h1>
             <p class="texto-suave mb-0">Confira seus próximos horários.</p>
         </div>
-        <a class="btn btn-marrom btn-lg" href="agendamento2.php">Novo agendamento</a>
+        <a class="btn btn-marrom btn-lg" href="view/usuario/agendamento.php">Novo agendamento</a>
     </div>
 </section>
 
@@ -68,7 +68,7 @@ require __DIR__ . '/../../includes/header.php';
             <?php if (!$agendamentos): ?>
                 <div class="cartao vazio">
                     <p class="mb-3">Você ainda não tem nenhum horário marcado. Vamos reservar o primeiro?</p>
-                    <a class="btn btn-marrom" href="agendamento2.php">Agendar horário</a>
+                    <a class="btn btn-marrom" href="view/usuario/agendamento.php">Agendar horário</a>
                 </div>
             <?php else: ?>
                 <div class="d-grid gap-3">

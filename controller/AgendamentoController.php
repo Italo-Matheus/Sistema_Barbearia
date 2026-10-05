@@ -4,16 +4,18 @@ require_once __DIR__ . '/../model/AgendamentoModel.php';
 
 class AgendamentoController
 {
+    private PDO $pdo;
     private AgendamentoModel $agendamentoModel;
 
-    public function __construct(AgendamentoModel $agendamentoModel)
+    public function __construct(PDO $pdo, AgendamentoModel $agendamentoModel)
     {
+        $this->pdo = $pdo;
         $this->agendamentoModel = $agendamentoModel;
     }
 
     public function agendar(array $post, bool $enviado, bool $tokenCsrfValido): void
     {
-        exigirLogin('cliente');
+        exigirLogin('cliente', $this->pdo);
 
         $clienteId = (int) $_SESSION['usuario_id'];
         $hoje = date('Y-m-d');

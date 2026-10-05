@@ -9,6 +9,14 @@ class ServicoDAO
         $this->pdo = $pdo;
     }
 
+    public function listarTodosAdmin(): array
+    {
+        return $this->pdo->query(
+            'SELECT id, nome, descricao, preco, duracao, ativo, criado_em
+             FROM servicos ORDER BY ativo DESC, nome'
+        )->fetchAll();
+    }
+
     public function listarAtivos(?int $limite = null): array
     {
         $sql = 'SELECT id, nome, descricao, preco, duracao, ativo, criado_em

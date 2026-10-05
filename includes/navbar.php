@@ -33,7 +33,11 @@ $tipo        = tipoUsuario();
                     </li>
                 <?php elseif ($tipo === 'barbeiro'): ?>
                     <li class="nav-item">
-                        <a class="nav-link<?= $paginaAtual === 'barbeiro.php' ? ' active' : '' ?>" href="barbeiro.php">Minha agenda</a>
+                        <a class="nav-link<?= $paginaAtual === 'barbeiro.php' ? ' active' : '' ?>" href="view/admin/barbeiro.php">Minha agenda</a>
+                    </li>
+                <?php elseif ($tipo === 'admin'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link<?= $paginaAtual === 'dashboard.php' ? ' active' : '' ?>" href="view/admin/dashboard.php">Painel administrativo</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -42,11 +46,12 @@ $tipo        = tipoUsuario();
                 <?php if (!$logado): ?>
                     <a class="btn btn-contorno-claro" href="view/login.php">Entrar</a>
                     <a class="btn btn-contorno-claro" href="view/cadastro.php">Criar conta</a>
-                    <a class="btn btn-ouro" href="agendamento2.php">Agendar horário</a>
+                    <a class="btn btn-ouro" href="view/usuario/agendamento.php">Agendar horário</a>
                 <?php else: ?>
                     <span class="navbar-text me-lg-2">Olá, <?= e(primeiroNome($_SESSION['usuario_nome'] ?? '')) ?></span>
+                    <a class="btn btn-contorno-claro" href="view/alterar_senha.php">Alterar senha</a>
                     <?php if ($tipo === 'cliente'): ?>
-                        <a class="btn btn-ouro" href="agendamento2.php">Agendar horário</a>
+                        <a class="btn btn-ouro" href="view/usuario/agendamento.php">Agendar horário</a>
                     <?php endif; ?>
                     <a class="btn btn-contorno-claro" href="logout.php"
                        data-confirmar="Tem certeza de que quer sair?">Sair</a>

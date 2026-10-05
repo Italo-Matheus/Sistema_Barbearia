@@ -14,7 +14,7 @@ class UsuarioLoginModel
     {
         $usuario = $this->usuarioDAO->buscarPorEmail($email);
 
-        if (!$usuario || !password_verify($senha, $usuario['senha'])) {
+        if (!$usuario || !(bool) $usuario['ativo'] || !password_verify($senha, $usuario['senha'])) {
             return null;
         }
 
