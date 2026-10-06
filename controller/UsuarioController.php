@@ -25,7 +25,6 @@ class UsuarioController
 
         $dados = $resultado['dados'];
         $erros = $resultado['erros'];
-        $ehBarbeiro = $dados['tipo'] === 'barbeiro';
         $tituloPagina = 'Criar conta';
         require __DIR__ . '/../view/cadastrar_usuario.php';
     }

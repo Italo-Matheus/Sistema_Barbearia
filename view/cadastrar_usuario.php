@@ -9,8 +9,8 @@ require __DIR__ . '/../includes/header.php';
             <div class="row g-0">
                 <div class="col-lg-5 d-none d-lg-block">
                     <div class="auth-lateral">
-                        <h2>Uma conta, dois jeitos de usar.</h2>
-                        <p>Clientes reservam o horário do seu próximo corte. Barbeiros acompanham a agenda sem complicação.</p>
+                        <h2>Seu próximo corte começa aqui.</h2>
+                        <p>Crie sua conta para reservar seus horários com praticidade.</p>
                     </div>
                 </div>
 
@@ -29,31 +29,6 @@ require __DIR__ . '/../includes/header.php';
 
                         <form method="post" action="view/cadastro.php">
                             <?= campoCsrf() ?>
-
-                            <p class="form-label">Você é</p>
-                            <div class="row g-3 mb-4">
-                                <div class="col-sm-6">
-                                    <input class="opcao-input visually-hidden" type="radio" name="tipo"
-                                           id="tipo-cliente" value="cliente" <?= $ehBarbeiro ? '' : 'checked' ?>>
-                                    <label class="opcao" for="tipo-cliente">
-                                        <span class="marca"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
-                                        <span class="opcao-titulo">Cliente</span>
-                                        <span class="opcao-texto">Quero reservar meus horários.</span>
-                                    </label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input class="opcao-input visually-hidden" type="radio" name="tipo"
-                                           id="tipo-barbeiro" value="barbeiro" <?= $ehBarbeiro ? 'checked' : '' ?>>
-                                    <label class="opcao" for="tipo-barbeiro">
-                                        <span class="marca"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
-                                        <span class="opcao-titulo">Barbeiro</span>
-                                        <span class="opcao-texto">Quero ver minha agenda.</span>
-                                    </label>
-                                </div>
-                                <?php if (isset($erros['tipo'])): ?>
-                                    <div class="col-12"><div class="text-danger small"><?= e($erros['tipo']) ?></div></div>
-                                <?php endif; ?>
-                            </div>
 
                             <div class="row g-3">
                                 <div class="col-12">
@@ -101,28 +76,6 @@ require __DIR__ . '/../includes/header.php';
                                     <?= erroCampo($erros, 'confirmar_senha') ?>
                                 </div>
 
-                                <!-- Aparece só para barbeiros (o JavaScript mostra e esconde) -->
-                                <div class="col-12 campos-barbeiro<?= $ehBarbeiro ? '' : ' oculto' ?>" id="campos-barbeiro">
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <p class="fw-semibold mb-0">Conte um pouco sobre você <span class="texto-suave fw-normal">(opcional)</span></p>
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="especialidade" class="form-label">Especialidade</label>
-                                            <input type="text" class="form-control<?= classeInvalido($erros, 'especialidade') ?>" id="especialidade"
-                                                   name="especialidade" value="<?= e($dados['especialidade']) ?>" maxlength="100"
-                                                   placeholder="Ex.: degradê e barba desenhada">
-                                            <?= erroCampo($erros, 'especialidade') ?>
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="descricao" class="form-label">Descrição profissional</label>
-                                            <textarea class="form-control<?= classeInvalido($erros, 'descricao') ?>" id="descricao" name="descricao"
-                                                      rows="3" maxlength="300"
-                                                      placeholder="Fale da sua experiência em poucas linhas."><?= e($dados['descricao']) ?></textarea>
-                                            <?= erroCampo($erros, 'descricao') ?>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-marrom btn-lg w-100 mt-4">Criar minha conta</button>

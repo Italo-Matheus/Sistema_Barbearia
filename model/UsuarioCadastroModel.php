@@ -14,13 +14,10 @@ class UsuarioCadastroModel
     public function processar(array $post, bool $enviado, bool $tokenCsrfValido): array
     {
         $dados = [
-            'tipo' => 'cliente',
             'nome' => '',
             'email' => '',
             'telefone' => '',
             'cpf' => '',
-            'especialidade' => '',
-            'descricao' => '',
         ];
         $erros = [];
         $cadastrado = false;
@@ -34,10 +31,6 @@ class UsuarioCadastroModel
 
             if (!$tokenCsrfValido) {
                 $erros['geral'] = 'Sua sessão expirou. Recarregue a página e tente de novo.';
-            }
-
-            if (!in_array($dados['tipo'], ['cliente', 'barbeiro'], true)) {
-                $erros['tipo'] = 'Escolha se você é cliente ou barbeiro.';
             }
 
             if (strlen($dados['nome']) < 5 || strpos($dados['nome'], ' ') === false) {
@@ -70,15 +63,6 @@ class UsuarioCadastroModel
                 $erros['confirmar_senha'] = 'As senhas não são iguais.';
             }
 
-            if ($dados['tipo'] === 'barbeiro') {
-                if (strlen($dados['especialidade']) > 100) {
-                    $erros['especialidade'] = 'A especialidade pode ter até 100 caracteres.';
-                }
-                if (strlen($dados['descricao']) > 300) {
-                    $erros['descricao'] = 'A descrição pode ter até 300 caracteres.';
-                }
-            }
-
             if (!isset($erros['email']) && $this->usuarioDAO->emailExiste($dados['email'])) {
                 $erros['email'] = 'Esse e-mail já tem uma conta. Que tal entrar?';
             }
@@ -87,7 +71,6 @@ class UsuarioCadastroModel
             }
 
             if (!$erros) {
-                $ehBarbeiro = $dados['tipo'] === 'barbeiro';
                 try {
                     $usuario = new UsuarioDTO(
                         $dados['nome'],
@@ -95,9 +78,9 @@ class UsuarioCadastroModel
                         $telefone,
                         $cpf !== '' ? $cpf : null,
                         password_hash($senha, PASSWORD_DEFAULT),
-                        $dados['tipo'],
-                        $ehBarbeiro && $dados['especialidade'] !== '' ? $dados['especialidade'] : null,
-                        $ehBarbeiro && $dados['descricao'] !== '' ? $dados['descricao'] : null
+                        'cliente',
+                        null,
+                        null
                     );
                     $this->usuarioDAO->cadastrar($usuario);
                     $cadastrado = true;
