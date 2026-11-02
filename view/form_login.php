@@ -18,7 +18,7 @@
 
                         <?php exibirErros($erro !== '' ? [$erro] : []); ?>
 
-                        <form method="post" action="view/login.php">
+                        <form method="post" action="view/login.php" data-validar="login">
                             <?= campoCsrf() ?>
 
                             <div class="mb-3">

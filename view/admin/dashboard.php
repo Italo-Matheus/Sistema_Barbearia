@@ -92,7 +92,7 @@ require __DIR__ . '/../../includes/header.php';
                     </div>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-4">
-                    <button class="btn btn-marrom" type="submit">Salvar alterações</button>
+                    <button class="btn btn-marrom" type="submit" data-confirmar="Salvar as alterações deste usuário?" data-confirmar-titulo="Salvar alterações?" data-confirmar-tipo="info">Salvar alterações</button>
                     <a class="btn btn-contorno" href="view/admin/dashboard.php">Cancelar</a>
                 </div>
             </form>
@@ -144,7 +144,7 @@ require __DIR__ . '/../../includes/header.php';
                                             <?= campoCsrf() ?>
                                             <input type="hidden" name="acao" value="alternar_ativo">
                                             <input type="hidden" name="id" value="<?= (int) $usuario['id'] ?>">
-                                            <button class="btn btn-sm btn-contorno" type="submit"><?= (bool) $usuario['ativo'] ? 'Bloquear' : 'Ativar' ?></button>
+                                            <button class="btn btn-sm btn-contorno" type="submit" data-confirmar="<?= (bool) $usuario['ativo'] ? 'Bloquear esta conta?' : 'Ativar esta conta?' ?>" data-confirmar-titulo="<?= (bool) $usuario['ativo'] ? 'Bloquear usuário?' : 'Ativar usuário?' ?>" data-confirmar-tipo="aviso"><?= (bool) $usuario['ativo'] ? 'Bloquear' : 'Ativar' ?></button>
                                         </form>
                                         <form method="post" action="view/admin/dashboard.php">
                                             <?= campoCsrf() ?>
@@ -154,13 +154,13 @@ require __DIR__ . '/../../includes/header.php';
                                                 <option value="cliente" <?= $usuario['tipo'] === 'cliente' ? 'selected' : '' ?>>Cliente</option>
                                                 <option value="barbeiro" <?= $usuario['tipo'] === 'barbeiro' ? 'selected' : '' ?>>Barbeiro</option>
                                             </select>
-                                            <button class="btn btn-sm btn-contorno mt-1" type="submit">Alterar perfil</button>
+                                            <button class="btn btn-sm btn-contorno mt-1" type="submit" data-confirmar="Alterar o perfil deste usuário?" data-confirmar-titulo="Alterar perfil?" data-confirmar-tipo="aviso">Alterar perfil</button>
                                         </form>
                                         <form method="post" action="view/admin/dashboard.php">
                                             <?= campoCsrf() ?>
                                             <input type="hidden" name="acao" value="excluir_usuario">
                                             <input type="hidden" name="id" value="<?= (int) $usuario['id'] ?>">
-                                            <button class="btn btn-sm btn-outline-danger" type="submit" data-confirmar="Excluir esta conta? Agendamentos associados impedem a exclusão.">Excluir</button>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit" data-confirmar="Excluir esta conta? Agendamentos associados impedem a exclusão." data-confirmar-titulo="Excluir usuário?" data-confirmar-tipo="perigo" data-confirmar-botao="Sim, excluir">Excluir</button>
                                         </form>
                                     </div>
                                 <?php else: ?>

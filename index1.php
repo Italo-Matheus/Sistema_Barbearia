@@ -1,2 +1,2 @@
 <?php
-require __DIR__ . '/view/index.php';
+require __DIR__ . '/index.php';

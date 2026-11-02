@@ -27,6 +27,7 @@ $temHorarioLivre = $temHorarioLivre ?? false;
 $horarios = $horarios ?? [];
 $horario = $horario ?? '';
 $observacao = $observacao ?? '';
+$scriptPagina = 'assets/js/agendamento.js';
 require __DIR__ . '/../../includes/header.php';
 ?>
 
@@ -108,6 +109,9 @@ require __DIR__ . '/../../includes/header.php';
                     <input type="date" class="form-control campo-data" id="data" name="data"
                            value="<?= e($data) ?>" min="<?= e($hoje) ?>" max="<?= e($dataMaxima) ?>" required>
                     <div class="form-text">As reservas abrem para os próximos <?= DIAS_MAXIMOS_AGENDAMENTO ?> dias.</div>
+                    <p class="form-text mb-0" id="status-disponibilidade" aria-live="polite">
+                        Os horários livres serão atualizados após você selecionar as opções e clicar em “Ver horários livres”.
+                    </p>
                 </div>
 
                 <div class="col-lg-4">
@@ -210,6 +214,7 @@ require __DIR__ . '/../../includes/header.php';
                         </dl>
 
                         <button type="submit" name="acao" value="confirmar" class="btn btn-marrom btn-lg w-100"
+                                data-confirmar="Confirma este agendamento?" data-confirmar-titulo="Confirmar agendamento?" data-confirmar-tipo="info" data-confirmar-botao="Sim, confirmar"
                                 <?= $temHorarioLivre ? '' : 'disabled' ?>>
                             Confirmar agendamento
                         </button>

@@ -34,7 +34,12 @@
     </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="assets/js/ui.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/script.js" defer></script>
+<?php if (!empty($scriptPagina)): ?>
+    <script src="<?= e($scriptPagina) ?>" defer></script>
+<?php endif; ?>
 </body>
 </html>

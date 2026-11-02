@@ -48,7 +48,7 @@ require __DIR__ . '/../includes/header.php';
                     <input class="form-control" type="password" id="confirmar_senha" name="confirmar_senha"
                            minlength="8" maxlength="72" autocomplete="new-password" required>
                 </div>
-                <button class="btn btn-marrom" type="submit">Salvar nova senha</button>
+                <button class="btn btn-marrom" type="submit" data-confirmar="Deseja salvar a nova senha?" data-confirmar-titulo="Alterar senha?" data-confirmar-tipo="aviso">Salvar nova senha</button>
                 <a class="btn btn-contorno ms-2" href="<?= e(areaDoUsuario()) ?>">Cancelar</a>
             </form>
         </div>

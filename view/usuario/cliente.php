@@ -5,6 +5,45 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 exigirLogin('cliente', $pdo);
 $usuario = carregarUsuario($pdo);
 
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && campo('acao') === 'cancelar_agendamento') {
+    $agendamentoId = filter_var($_POST['agendamento_id'] ?? null, FILTER_VALIDATE_INT);
+
+    if (!csrfValido()) {
+        definirMensagem('danger', 'Sua sessão expirou. Recarregue a página e tente novamente.');
+    } elseif ($agendamentoId === false || $agendamentoId === null || $agendamentoId < 1) {
+        definirMensagem('danger', 'Não foi possível identificar o agendamento.');
+    } else {
+        try {
+            $cancelamento = $pdo->prepare(
+                "UPDATE agendamentos
+                 SET status = 'cancelado'
+                 WHERE id = :id
+                   AND cliente_id = :cliente
+                   AND status = 'agendado'
+                   AND (data > :hoje OR (data = :hoje_igual AND horario > :agora))"
+            );
+            $cancelamento->execute([
+                'id' => $agendamentoId,
+                'cliente' => $usuario['id'],
+                'hoje' => date('Y-m-d'),
+                'hoje_igual' => date('Y-m-d'),
+                'agora' => date('H:i:s'),
+            ]);
+
+            if ($cancelamento->rowCount() > 0) {
+                definirMensagem('success', 'Agendamento cancelado com sucesso.');
+            } else {
+                definirMensagem('warning', 'Este agendamento não está mais disponível para cancelamento.');
+            }
+        } catch (Throwable $erro) {
+            error_log('Erro ao cancelar agendamento: ' . $erro->getMessage());
+            definirMensagem('danger', 'Não foi possível cancelar seu agendamento agora. Tente novamente.');
+        }
+    }
+
+    redirecionar('cliente.php');
+}
+
 // Próximos agendamentos: de hoje em diante, sem contar horários que já passaram.
 $consulta = $pdo->prepare(
     "SELECT a.id, a.data, a.horario, a.observacao, a.valor_total,
@@ -100,7 +139,19 @@ require __DIR__ . '/../../includes/header.php';
                                     </p>
                                 <?php endif; ?>
                             </div>
-                            <div class="agendamento-valor"><?= e(formatarPreco($agendamento['valor_total'])) ?></div>
+                            <div class="agendamento-aside">
+                                <div class="agendamento-valor"><?= e(formatarPreco($agendamento['valor_total'])) ?></div>
+                                <form method="post" action="cliente.php">
+                                    <?= campoCsrf() ?>
+                                    <input type="hidden" name="acao" value="cancelar_agendamento">
+                                    <input type="hidden" name="agendamento_id" value="<?= (int) $agendamento['id'] ?>">
+                                    <button type="submit" class="btn btn-cancelar-agendamento"
+                                            data-confirmar="Deseja cancelar este agendamento?" data-confirmar-titulo="Cancelar agendamento?" data-confirmar-tipo="perigo" data-confirmar-botao="Sim, cancelar">
+                                        <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                        <span>Cancelar agendamento</span>
+                                    </button>
+                                </form>
+                            </div>
                         </article>
                     <?php endforeach; ?>
                 </div>

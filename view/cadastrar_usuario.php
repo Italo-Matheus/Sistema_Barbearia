@@ -27,7 +27,7 @@ require __DIR__ . '/../includes/header.php';
                         }
                         ?>
 
-                        <form method="post" action="view/cadastro.php">
+                        <form method="post" action="view/cadastro.php" data-validar="cadastro">
                             <?= campoCsrf() ?>
 
                             <div class="row g-3">

@@ -7,7 +7,7 @@ $paginaAtual = basename($_SERVER['SCRIPT_NAME']);
 $logado      = usuarioLogado();
 $tipo        = tipoUsuario();
 ?>
-<nav class="navbar navbar-expand-lg navbar-barbearia sticky-top" data-bs-theme="dark">
+<nav class="navbar navbar-barbearia sticky-top" data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand" href="index.php">
             <i class="bi bi-scissors" aria-hidden="true"></i>
@@ -42,7 +42,7 @@ $tipo        = tipoUsuario();
                 <?php endif; ?>
             </ul>
 
-            <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2 pb-3 pb-lg-0">
+            <div class="d-flex flex-column gap-2 pb-3">
                 <?php if (!$logado): ?>
                     <a class="btn btn-contorno-claro" href="view/login.php">Entrar</a>
                     <a class="btn btn-contorno-claro" href="view/cadastro.php">Criar conta</a>
@@ -54,7 +54,7 @@ $tipo        = tipoUsuario();
                         <a class="btn btn-ouro" href="view/usuario/agendamento.php">Agendar horário</a>
                     <?php endif; ?>
                     <a class="btn btn-contorno-claro" href="logout.php"
-                       data-confirmar="Tem certeza de que quer sair?">Sair</a>
+                       data-confirmar="Tem certeza de que quer sair?" data-confirmar-titulo="Sair da conta?" data-confirmar-tipo="info">Sair</a>
                 <?php endif; ?>
             </div>
         </div>

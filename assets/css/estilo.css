@@ -64,7 +64,7 @@ h3 { font-size: 1.3rem; }
 
 .texto-suave { color: var(--texto-suave); }
 
-.alert { border-radius: 12px; }
+.alert { position: relative; overflow: hidden; border-radius: 12px; }
 
 /* ---------------------------------------------------------------------
    Botões
@@ -787,6 +787,58 @@ h3 { font-size: 1.3rem; }
     font-size: 1.4rem;
 }
 
+.agendamento-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.65rem;
+    margin-left: auto;
+}
+
+.agendamento-aside form { margin: 0; }
+
+.btn.btn-cancelar-agendamento {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(239, 68, 68, 0.55);
+    border-radius: 8px;
+    background: transparent;
+    color: #ef4444;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.btn.btn-cancelar-agendamento:hover {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.9);
+    color: #fff;
+}
+
+.btn.btn-cancelar-agendamento:active {
+    border-color: #dc2626;
+    background: #dc2626;
+    color: #fff;
+}
+
+@media (max-width: 575.98px) {
+    .agendamento-aside {
+        align-items: flex-start;
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn.btn-cancelar-agendamento { transition: none; }
+}
+
 .selo {
     display: inline-block;
     margin-left: 0.35rem;
@@ -828,10 +880,272 @@ h3 { font-size: 1.3rem; }
 }
 
 /* ---------------------------------------------------------------------
+   Animações e microinterações
+   --------------------------------------------------------------------- */
+.navbar-barbearia {
+    transition: box-shadow 180ms ease;
+}
+
+.navbar-barbearia.rolou {
+    padding-block: 0.4rem;
+    box-shadow: 0 6px 18px rgba(38, 35, 32, 0.22);
+}
+
+.btn:not(:disabled) {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.btn:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+.btn:not(:disabled):active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.js .revelar {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 420ms ease var(--atraso-revelar, 0ms), transform 420ms ease var(--atraso-revelar, 0ms);
+}
+
+.js .revelar.revelado {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alert-entrando {
+    animation: alerta-entrada 260ms ease both;
+}
+
+.alerta-progresso {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    transform-origin: left center;
+    background: currentColor;
+    opacity: 0.4;
+    animation: alerta-tempo 6s linear forwards;
+    pointer-events: none;
+}
+
+.alerta-pausado .alerta-progresso {
+    animation-play-state: paused;
+}
+
+.alerta-saindo {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.confirmacao-modal {
+    width: min(34rem, calc(100vw - 2rem));
+    max-width: none;
+    padding: 0;
+    border: 1px solid var(--linha);
+    border-radius: 16px;
+    background: var(--papel);
+    color: var(--grafite);
+    box-shadow: 0 24px 70px rgba(20, 17, 15, 0.3);
+}
+
+.confirmacao-modal[open] {
+    animation: confirmacao-entrada 180ms ease-out both;
+}
+
+.confirmacao-modal::backdrop {
+    background: rgba(25, 22, 19, 0.58);
+    animation: confirmacao-backdrop 180ms ease-out both;
+}
+
+.confirmacao-conteudo {
+    padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+.confirmacao-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.8rem;
+}
+
+.confirmacao-icone {
+    display: grid;
+    flex: 0 0 2.8rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--areia);
+    color: var(--marrom);
+    font-size: 1.2rem;
+}
+
+.confirmacao-titulo {
+    margin: 0;
+    font-size: clamp(1.3rem, 5vw, 1.7rem);
+}
+
+.confirmacao-mensagem {
+    margin: 0;
+    color: var(--texto-suave);
+    overflow-wrap: anywhere;
+}
+
+.confirmacao-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+}
+
+.confirmacao-modal.tipo-perigo .confirmacao-icone {
+    background: #fbe9e7;
+    color: #a32118;
+}
+
+.confirmacao-modal.tipo-aviso .confirmacao-icone {
+    background: #f7efd9;
+    color: var(--ouro-escuro);
+}
+
+.confirmacao-modal.tipo-info .confirmacao-icone {
+    background: #eee8df;
+    color: var(--marrom);
+}
+
+.forca-senha-trilho {
+    display: block;
+    width: 100%;
+    height: 5px;
+    margin-top: 0.35rem;
+    overflow: hidden;
+    border-radius: 99px;
+    background: var(--linha);
+}
+
+.forca-senha-barra {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: #a32118;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.forca-senha-barra[data-forca="razoavel"] { background: var(--ouro-escuro); }
+.forca-senha-barra[data-forca="forte"] { background: #276749; }
+
+.invalid-feedback {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.erro-feedback {
+    animation: feedback-entrada 180ms ease-out both;
+}
+
+.erro-sacudindo {
+    animation: campo-sacudido 260ms ease-in-out;
+}
+
+.total-atualizado {
+    animation: total-pulso 220ms ease-out;
+}
+
+.resumo-linha-atualizada {
+    animation: linha-resumo 180ms ease-out both;
+}
+
+.opcao-input:checked + .opcao {
+    border-color: var(--ouro);
+    box-shadow: 0 0 0 2px rgba(196, 154, 74, 0.22);
+}
+
+.opcao-input:focus-visible + .opcao {
+    outline: 2px solid var(--ouro-escuro);
+    outline-offset: 3px;
+}
+
+.opcao-input:checked + .opcao .marca {
+    background: var(--ouro);
+    color: var(--grafite);
+    transform: scale(1.08);
+}
+
+.opcao .marca {
+    transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.carregando-horarios {
+    animation: horario-pulso 900ms ease-in-out infinite alternate;
+}
+
+@keyframes confirmacao-entrada {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes confirmacao-backdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes alerta-entrada {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes alerta-tempo {
+    to { transform: scaleX(0); }
+}
+
+@keyframes campo-sacudido {
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-2px); }
+}
+
+@keyframes feedback-entrada {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes total-pulso {
+    50% { transform: scale(1.04); opacity: 0.72; }
+}
+
+@keyframes linha-resumo {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes horario-pulso {
+    to { opacity: 0.55; }
+}
+
+/* ---------------------------------------------------------------------
    Preferência por menos movimento
    --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    * { transition: none !important; }
-}
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 
+    .js .revelar,
+    .js .revelar.revelado {
+        opacity: 1;
+        transform: none;
+    }
+}
