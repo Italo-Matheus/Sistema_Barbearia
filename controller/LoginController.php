@@ -31,7 +31,9 @@ class LoginController
             } else {
                 $usuario = $this->loginModel->autenticar($email, $senha);
 
-                if ($usuario) {
+                if ($usuario && !(bool) $usuario['ativo']) {
+                    $erro = 'Este perfil foi desativado. Entre em contato com a administração da barbearia para reativá-lo.';
+                } elseif ($usuario) {
                     session_regenerate_id(true);
                     $_SESSION['usuario_id'] = (int) $usuario['id'];
                     $_SESSION['usuario_nome'] = $usuario['nome'];
@@ -39,9 +41,9 @@ class LoginController
 
                     definirMensagem('success', 'Que bom ter você por aqui, ' . primeiroNome($usuario['nome']) . '!');
                     redirecionar('../' . areaDoUsuario());
+                } else {
+                    $erro = 'Não conseguimos entrar com esses dados. Confira seu e-mail e sua senha.';
                 }
-
-                $erro = 'Não conseguimos entrar com esses dados. Confira seu e-mail e sua senha.';
             }
         }
 

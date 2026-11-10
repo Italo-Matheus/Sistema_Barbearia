@@ -3,6 +3,7 @@ require_once __DIR__ . '/dao/AgendamentoDAO.php';
 require_once __DIR__ . '/dao/AgendamentoServicoDAO.php';
 require_once __DIR__ . '/dao/ServicoDAO.php';
 require_once __DIR__ . '/dao/UsuarioDAO.php';
+require_once __DIR__ . '/dao/HorarioDAO.php';
 require_once __DIR__ . '/../includes/funcoes.php';
 
 class AgendamentoModel
@@ -10,12 +11,14 @@ class AgendamentoModel
     private AgendamentoDAO $agendamentoDAO;
     private ServicoDAO $servicoDAO;
     private UsuarioDAO $usuarioDAO;
+    private HorarioDAO $horarioDAO;
 
     public function __construct(PDO $pdo)
     {
         $this->agendamentoDAO = new AgendamentoDAO($pdo);
         $this->servicoDAO = new ServicoDAO($pdo);
         $this->usuarioDAO = new UsuarioDAO($pdo);
+        $this->horarioDAO = new HorarioDAO($pdo);
     }
 
     public function listarServicos(): array
@@ -53,7 +56,9 @@ class AgendamentoModel
         $agora = date('H:i');
         $horarios = [];
 
-        foreach (HORARIOS_ATENDIMENTO as $horario) {
+        $diaSemana = (int) (new DateTimeImmutable($data))->format('w');
+        foreach ($this->horarioDAO->listarPorDia($diaSemana) as $horarioBanco) {
+            $horario = formatarHorario($horarioBanco);
             if (in_array($horario, $ocupados, true)) {
                 $horarios[$horario] = 'ocupado';
             } elseif ($data === $hoje && $horario <= $agora) {

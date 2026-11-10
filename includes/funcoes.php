@@ -9,9 +9,6 @@
 // ---------------------------------------------------------------------
 const NOME_BARBEARIA = 'TeamCurtz';
 
-// Horários de atendimento: cada horário é uma vaga de um barbeiro.
-const HORARIOS_ATENDIMENTO = ['08:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00', '19:30'];
-
 // Até quantos dias à frente o cliente pode reservar.
 const DIAS_MAXIMOS_AGENDAMENTO = 30;
 

@@ -151,6 +151,59 @@ class UsuarioDAO
         return $usuario ?: null;
     }
 
+    public function buscarPerfil(int $id): ?array
+    {
+        $consulta = $this->pdo->prepare(
+            'SELECT id, nome, email, telefone, cpf, tipo, especialidade, descricao, ativo, criado_em, foto_perfil
+             FROM usuarios WHERE id = ? LIMIT 1'
+        );
+        $consulta->execute([$id]);
+        $usuario = $consulta->fetch();
+
+        return $usuario ?: null;
+    }
+
+    public function atualizarDadosPerfil(int $id, string $nome, string $email, string $telefone): bool
+    {
+        $atualizacao = $this->pdo->prepare(
+            'UPDATE usuarios SET nome = ?, email = ?, telefone = ? WHERE id = ? AND ativo = 1'
+        );
+
+        return $atualizacao->execute([$nome, $email, $telefone, $id]);
+    }
+
+    public function atualizarFotoPerfil(int $id, string $caminho): bool
+    {
+        $atualizacao = $this->pdo->prepare(
+            'UPDATE usuarios SET foto_perfil = ? WHERE id = ? AND ativo = 1'
+        );
+
+        return $atualizacao->execute([$caminho, $id]);
+    }
+
+    public function listarHistoricoAgendamentos(int $usuarioId, string $tipo): array
+    {
+        $colunaUsuario = $tipo === 'barbeiro' ? 'a.barbeiro_id' : 'a.cliente_id';
+        $colunaNome = $tipo === 'barbeiro' ? 'cliente.nome' : 'barbeiro.nome';
+        $consulta = $this->pdo->prepare(
+            "SELECT a.id, a.data, a.horario, a.status, a.valor_total,
+                    {$colunaNome} AS contraparte_nome,
+                    GROUP_CONCAT(s.nome ORDER BY s.id SEPARATOR ', ') AS servicos
+             FROM agendamentos a
+             JOIN usuarios cliente ON cliente.id = a.cliente_id
+             JOIN usuarios barbeiro ON barbeiro.id = a.barbeiro_id
+             LEFT JOIN agendamento_servicos ags ON ags.agendamento_id = a.id
+             LEFT JOIN servicos s ON s.id = ags.servico_id
+             WHERE {$colunaUsuario} = ?
+             GROUP BY a.id, a.data, a.horario, a.status, a.valor_total, contraparte_nome
+             ORDER BY a.data DESC, a.horario DESC
+             LIMIT 100"
+        );
+        $consulta->execute([$usuarioId]);
+
+        return $consulta->fetchAll();
+    }
+
     public function buscarHashSenha(int $id): ?string
     {
         $consulta = $this->pdo->prepare('SELECT senha FROM usuarios WHERE id = ? AND ativo = 1 LIMIT 1');

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/AgendamentoServicoDAO.php';
+require_once __DIR__ . '/ServicoDAO.php';
 
 class AgendamentoDAO
 {
@@ -33,6 +35,121 @@ class AgendamentoDAO
         $consulta->execute();
 
         return $consulta->fetchAll();
+    }
+
+    public function buscarParaEdicaoAdmin(int $id): ?array
+    {
+        $consulta = $this->pdo->prepare(
+            'SELECT a.id, a.cliente_id, a.barbeiro_id, a.data, a.horario,
+                    a.observacao, a.valor_total, a.status,
+                    c.nome AS cliente_nome, b.nome AS barbeiro_nome
+             FROM agendamentos a
+             JOIN usuarios c ON c.id = a.cliente_id
+             JOIN usuarios b ON b.id = a.barbeiro_id
+             WHERE a.id = ? LIMIT 1'
+        );
+        $consulta->execute([$id]);
+        $agendamento = $consulta->fetch();
+        if (!$agendamento) {
+            return null;
+        }
+
+        $servicos = new AgendamentoServicoDAO($this->pdo);
+        $agendamento['servico_ids'] = array_map(
+            'intval',
+            $servicos->listarIdsPorAgendamento($id)
+        );
+
+        return $agendamento;
+    }
+
+    public function atualizarAdmin(
+        int $id,
+        int $barbeiroId,
+        string $data,
+        string $horario,
+        ?string $observacao,
+        string $status,
+        array $servicos
+    ): bool {
+        $idsServicos = array_values(array_unique(array_filter(
+            array_map('intval', $servicos),
+            static fn(int $servicoId): bool => $servicoId > 0
+        )));
+        if (!$idsServicos) {
+            throw new InvalidArgumentException('Selecione pelo menos um serviço.');
+        }
+        if (!in_array($status, ['agendado', 'concluido', 'cancelado'], true)) {
+            throw new InvalidArgumentException('Status de agendamento inválido.');
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $travaBarbeiro = $this->pdo->prepare(
+                "SELECT id FROM usuarios WHERE id = ? AND tipo = 'barbeiro' AND ativo = 1 FOR UPDATE"
+            );
+            $travaBarbeiro->execute([$barbeiroId]);
+            if ($travaBarbeiro->fetchColumn() === false) {
+                throw new InvalidArgumentException('Selecione um barbeiro ativo.');
+            }
+
+            $atual = $this->pdo->prepare(
+                'SELECT cliente_id FROM agendamentos WHERE id = ? FOR UPDATE'
+            );
+            $atual->execute([$id]);
+            if ($atual->fetchColumn() === false) {
+                throw new InvalidArgumentException('Esse agendamento não existe mais.');
+            }
+
+            if ($status === 'agendado') {
+                $conflito = $this->pdo->prepare(
+                    "SELECT COUNT(*) FROM agendamentos
+                     WHERE barbeiro_id = ? AND data = ? AND horario = ?
+                       AND status = 'agendado' AND id <> ?"
+                );
+                $conflito->execute([$barbeiroId, $data, $horario, $id]);
+                if ((int) $conflito->fetchColumn() > 0) {
+                    throw new InvalidArgumentException('Esse barbeiro já tem um agendamento nesse dia e horário.');
+                }
+            }
+
+            $servicosAtivos = (new ServicoDAO($this->pdo))->buscarAtivosPorIds($idsServicos);
+            if (count($servicosAtivos) !== count($idsServicos)) {
+                throw new InvalidArgumentException('Selecione apenas serviços ativos.');
+            }
+
+            $totalCentavos = 0;
+            foreach ($servicosAtivos as $servico) {
+                $totalCentavos += (int) round((float) $servico['preco'] * 100);
+            }
+
+            $atualizacao = $this->pdo->prepare(
+                'UPDATE agendamentos
+                 SET barbeiro_id = ?, data = ?, horario = ?, observacao = ?, status = ?, valor_total = ?
+                 WHERE id = ?'
+            );
+            $atualizacao->execute([
+                $barbeiroId,
+                $data,
+                $horario,
+                $observacao !== '' ? $observacao : null,
+                $status,
+                number_format($totalCentavos / 100, 2, '.', ''),
+                $id,
+            ]);
+
+            $this->pdo->prepare('DELETE FROM agendamento_servicos WHERE agendamento_id = ?')
+                ->execute([$id]);
+            (new AgendamentoServicoDAO($this->pdo))->inserirLote($id, $servicosAtivos);
+            $this->pdo->commit();
+
+            return true;
+        } catch (Throwable $erro) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $erro;
+        }
     }
 
     public function listarHorariosOcupados(int $barbeiroId, string $data): array

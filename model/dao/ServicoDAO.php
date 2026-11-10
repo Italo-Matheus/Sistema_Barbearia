@@ -17,6 +17,18 @@ class ServicoDAO
         )->fetchAll();
     }
 
+    public function buscarPorId(int $id): ?array
+    {
+        $consulta = $this->pdo->prepare(
+            'SELECT id, nome, descricao, preco, duracao, ativo
+             FROM servicos WHERE id = ? LIMIT 1'
+        );
+        $consulta->execute([$id]);
+        $servico = $consulta->fetch();
+
+        return $servico ?: null;
+    }
+
     public function listarAtivos(?int $limite = null): array
     {
         $sql = 'SELECT id, nome, descricao, preco, duracao, ativo, criado_em

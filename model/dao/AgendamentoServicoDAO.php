@@ -22,6 +22,17 @@ class AgendamentoServicoDAO
         return $consulta->fetchAll();
     }
 
+    public function listarIdsPorAgendamento(int $agendamentoId): array
+    {
+        $consulta = $this->pdo->prepare(
+            'SELECT servico_id FROM agendamento_servicos
+             WHERE agendamento_id = ? ORDER BY servico_id'
+        );
+        $consulta->execute([$agendamentoId]);
+
+        return $consulta->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     public function inserirLote(int $agendamentoId, array $servicos): void
     {
         $insercao = $this->pdo->prepare(
